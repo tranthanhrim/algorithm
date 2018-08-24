@@ -1,19 +1,37 @@
-function asciiDif(a,b) {
-  return Math.abs(a.charCodeAt(0) - b.charCodeAt(0));
-}
-
-function funnyString(s) {
-  const reverseStr = s.split("").reverse().join("");
-  console.log('reverseStr: ', reverseStr);
-  const sLength = s.length;
-  let isFunny = 'Funny';
-  for(let i = 1; i < sLength; i++) {
-    if (asciiDif(s[i], s[i - 1]) !== asciiDif(reverseStr[i], reverseStr[i - 1])) {
-      isFunny = 'Not Funny';
-      break;
+function pairs(k, a) {
+  const arrSorted = a.sort((a, b) => { return a - b });
+  const arrLength = a.length;
+  let resultObj = {};
+  for (let i = 0; i < arrLength - 1; i++) {
+    if (arrSorted[i] > k) break;
+    for (let j = i + 1; j < arrLength; j++) {
+      if (arrSorted[j] > k) break;
+      if (arrSorted[i] + arrSorted[j] === k) {
+        resultObj[`${arrSorted[i]} ${arrSorted[j]}`] = k;
+        break;
+      }
     }
   }
-  return isFunny;
+  return Object.keys(resultObj).length;
 }
 
-console.log(funnyString('acxz'));
+// const arr = [1,2,3,6,7,8,9,1];
+// console.log(pairs(10, arr));
+
+function arrange(sentence) {
+  const words = sentence.substring(0, sentence.length - 1).split(' ');
+  if (words.length === 1 || words.length === 0) return sentence;
+  const firstWord = words[0];
+  words.sort((a, b) => { return a.length - b.length });
+
+  const firstWordIndex = words.findIndex(word => word === firstWord);
+  console.log('firstWordIndex: ', firstWordIndex);
+  if (firstWordIndex !== 0) {
+    words[firstWordIndex] = words[firstWordIndex].toLowerCase();
+  }
+  words[0] = `${words[0][0].toUpperCase()}${words[0].slice(1)}`;
+
+  return words.join(' ').concat('.');
+}
+
+console.log('arrange: ', arrange('Amm hi amm hia ammm.'));
